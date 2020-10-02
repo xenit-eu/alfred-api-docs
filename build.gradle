@@ -1,0 +1,105 @@
+buildscript {
+    repositories {
+        maven {
+            url "https://artifactory.xenit.eu/artifactory/libs-release"
+            credentials {
+                username property("eu.xenit.artifactory.username")
+                password property("eu.xenit.artifactory.password")
+            }
+        }
+    }
+    dependencies {
+        classpath 'eu.xenit.alfresco:upload-artifacts-gradle-plugin:1.0.1'
+    }
+}
+
+plugins {
+    id 'eu.xenit.docker-compose' version '5.0.7'
+}
+
+group 'eu.xenit.alfred.api'
+def baseVersion = '2.7.0'
+
+def branchName = System.env.BRANCH_NAME
+
+def isRelease = branchName != null && branchName.startsWith('release')
+if (isRelease)
+    version = "$baseVersion"
+else
+    version = "$baseVersion-SNAPSHOT"
+
+
+dockerCompose {
+    useComposeFiles = ['docker-compose.yml']
+    captureContainersOutput = true
+}
+
+task initCreateDocs() {
+    doLast {
+        copyResources('developer')
+        copyResources('installation')
+        copyResources('user')
+    }
+}
+
+// some weird chaining, but it works :-)
+//      dixit Daan Kerkhofs anno 2018-01-08
+composeUp.dependsOn initCreateDocs
+composeDown.dependsOn composeUp
+
+task createDocs(type: Copy) {
+    dependsOn composeDown
+
+    from "${project.buildDir}/src"
+    into "${project.buildDir}/"
+    include '**/*.pdf'
+    includeEmptyDirs = false
+
+    // Copy only files, remove folder structure
+    eachFile {
+        details -> details.path = details.name
+    }
+
+    doLast {
+        delete fileTree(dir: "${project.buildDir}/src/")
+    }
+}
+
+task clean(type: Delete) {
+    delete project.buildDir
+}
+
+def copyResources(String source) {
+    def targetDir = "${project.buildDir}/src/${source}"
+
+    copy {
+        from source
+        into targetDir
+    }
+    copySharedImageResources(source)
+}
+
+def copySharedImageResources(String source) {
+    def targetDir = "${project.buildDir}/src/${source}/images"
+    copy {
+        from 'images'
+        into targetDir
+    }
+}
+
+import eu.xenit.upload.artifacts.gradle.UploadArtifactsTask
+
+task uploadArtifacts(type: UploadArtifactsTask) {
+    dependsOn createDocs
+    product = 'alfred-api'
+    version = project.version
+    artifacts = {
+        createDocs
+                .outputs
+                .files
+                .singleFile
+                .listFiles()
+                .collect()
+                .findAll { !it.isDirectory() }
+    }
+}
