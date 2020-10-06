@@ -77,12 +77,21 @@ def copyResources(String source) {
         into targetDir
     }
     copySharedImageResources(source)
+    copyCommonTextResources(source)
 }
 
 def copySharedImageResources(String source) {
     def targetDir = "${project.buildDir}/src/${source}/images"
     copy {
         from 'images'
+        into targetDir
+    }
+}
+
+def copyCommonTextResources(String source) {
+    def targetDir = "${project.buildDir}/src/${source}"
+    copy {
+        from 'common'
         into targetDir
     }
 }

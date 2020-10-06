@@ -6,7 +6,7 @@ services:
     volumes:
       - ./build/src/user:/docs:z
     working_dir: /docs
-    command: user-guide.md -o Alfred_Api_User_Guide.pdf --info
+    command: user-guide.md -o Alfred_Api_User_Guide.pdf
 
   installation:
     image: hub.xenit.eu/private/xenit-markdowntopdf:latest
