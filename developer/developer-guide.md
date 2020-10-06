@@ -12,7 +12,7 @@
     * Add a note to the changelog with upgrade instructions
     * Notify all customers at the next release
 * When working in REST code, please comply to **REST HTTP result codes** policy outlined in the
-  [user guide](https://docs.xenit.eu/alfred-api/user-guide).
+  [user guide](https://docs.xenit.eu/alfred-api/stable-user).
 * Prefer unit tests over integration tests to keep builds fast
   
 ## Project structure
