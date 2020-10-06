@@ -399,7 +399,7 @@ Full documentation can be found on the alfresco documentation page:
 }
 ```
 
-### Examples
+### Example Search Queries
 
 Search for the first 10 nodes in the `cm:content` namespace with facets:
 ```json
