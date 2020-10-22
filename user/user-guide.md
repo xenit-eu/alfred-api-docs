@@ -20,7 +20,7 @@ and additional endpoints that are not supported by the Alfresco Public API.
     * Add a note to the changelog with upgrade instructions
     * Notify all customers at the next release
 * When working in REST code, please comply to **REST HTTP result codes** policy outlined in the
-  [user guide](https://docs.xenit.eu/alfred-api/stable-user).
+  [user guide](https://docs.xenit.eu/alfred-api/stable-user/rest-api/index.html#rest-http-result-codes).
 * Prefer unit tests over integration tests to keep builds fast
   
 ## Project structure
@@ -38,16 +38,12 @@ Alfresco version used.
 ## How to
 
 ### Run
-If it is the first time you build Alfred API on your machine:
-```bash
-./setup.sh  # or ./setup.bat on Windows
-```
-Then:
+
+The following command starts up all docker containers required for an Alfresco running Alfred API.
 ```bash
 ./gradlew :apix-docker:docker-${VERSION}:composeUp --info
 ```
 Where `VERSION` is e.g. `51`.
-This starts up all docker containers required for an Alfresco running Alfred API.
 
 
 ### Run integration tests
@@ -75,6 +71,7 @@ portmapping `8000:8000`. This file does not get loaded when running in Jenkins.
 Again, where `VERSION` is e.g. `51`.
 
 #### Deploy code changes for development
+
 In a development scenario, it is possible to upload code changes to a running alfresco through dynamic extensions.
 This requires the running alfresco to already have an older or equal version of alfred-api installed, and
 the use of the jar artifact instead of the amp to do the new install. 
@@ -110,7 +107,7 @@ and then restart the containers with:
 ./gradlew :apix-docker:docker-51:composeUp --info
 ```
 
-# Alfred api Concepts
+# Alfred API Concepts
 Alfred API is composed of two logical layers.
 
 * The base layer is a *Java API* built on top of the Alfresco.
@@ -140,8 +137,11 @@ parameters to the corresponding Alfred API data objects, then calls the correspo
 serializes its return value to JSON.
 
 ### Developer notes on search syntax
+
 #### Unimplemented search options:
+
 These options have some code towards handling, but are not implemented such that they are used in the search.
+
 * `facets.mincount`
 * `facets.limit`
 * `orderBy.expression`
@@ -200,22 +200,22 @@ Full JavaDoc documentation of the Alfred API Java interface is available in the 
 view the JavaDoc by browsing to `/alfresco/s/apix/javadocs/index.html` on your Alfresco host that
 has Alfred API installed.
 
-# Java Api
+# Java API
 
-The alfred-api java api the core to exposing alfresco functionality and normalizing operations across version.
-Any extensions written while depending on alfred api can be easily ported to a new alfresco version.
+The java API is the core to exposing alfresco functionality and normalizing operations across version.
+Any extensions written while depending on Alfred API can be easily ported to a new alfresco version.
 
-When the api is installed, all of its service are available as beans and can be wired into your own classes.
+When the API is installed, all of its service are available as beans and can be wired into your own classes.
 
-# Rest Api
+# REST API
 
-For a full overview of the Rest api, please refer to [the swagger specification](https://demo.xenit.eu/alfresco/s/apix/v1/docs/ui.html).
+For a full overview of the REST API, please refer to [the swagger specification](https://demo.xenit.eu/alfresco/s/apix/v1/docs/ui.html).
 
 ## Search Requests
 
-### query
+### Query
 Object containing subcomponents that build the requested query.
-All queries are translated to Alfresco Full Text Search ([AFTS]("https://community.alfresco.com/docs/DOC-5729-full-text-search-query-syntax")) by alfred-api when executed
+All queries are translated to Alfresco Full Text Search (see [AFTS](https://community.alfresco.com/docs/DOC-5729-full-text-search-query-syntax)) by Alfred API when executed
 
 #### Syntax
 
@@ -225,7 +225,7 @@ A searchnode is either an operator or a search term.
 ##### Operators
 
 Operators currently include only the standard AND, OR & NOT logical operations.
-An operator is structured in the json payload as a named list.
+An operator is structured in the JSON payload as a named list.
 
 * And
 
@@ -327,7 +327,7 @@ Operators can be nested to form complex queries:
 Search terms can be split into two groups: special terms and generic terms.
 Special terms are used to search for specific concepts, generic terms are used to search for property values at large.
 
-###### Special terms
+**Special terms**
 
 * type
 
@@ -427,9 +427,10 @@ Lookup for any nodes where the value of the given property is set and not null.
 { "isnotnull": "cm:author" }
 ```
 
-###### Note Unsupported terms
+**Note Unsupported terms**
 
-The following terms are available in alfresco, but are currently not supported by Alfred-api:
+The following terms are available in alfresco, but are currently not supported by Alfred API:
+
 * isroot
 * tx
 * primaryparent
@@ -439,7 +440,7 @@ The following terms are available in alfresco, but are currently not supported b
 * exactaspect
 * tag
 
-###### Generic terms
+**Generic terms**
 
 Generic terms are searchterms for any given property with any given value or range.
 ```json
@@ -463,7 +464,8 @@ Generic terms are searchterms for any given property with any given value or ran
 ```
 Terms using values can also take the `exact` boolean parameter (by default it is considered set to false). 
 This signifies that the given value needs to be matched exactly, as opposed to the default fuzzy search. 
-This also implies that wildcards are not compatible with the exact parameter. 
+This also implies that wildcards are not compatible with the exact parameter.
+
 **For Transactional Metadata Queries, the `exact` parameter is mandatory.**
 ```json
 { "property": 
@@ -540,6 +542,7 @@ Option to request specific consistency. Options are:
   "consistency": "TRANSACTIONAL"
 }
 ```
+
 #### Note on search, consistency and fuzzyness
 
 Alfresco internally supports 2 types of searchqueries: database-backed and solr-backed. Based on the server configuration
@@ -547,7 +550,7 @@ and the search query, it will determine which of these 2 to use. Alfresco will a
 on indexed properties, content or for fuzzy matching, solr is required.
 
 In the documentation database-backed queries are known as `Transactional Metadata Queries` or `TDMQ`'s.
-To enable TDMQ's for alfred-api the `exact` parameter is required for generic search terms to be searched in the database,
+To enable TDMQ's for Alfred API the `exact` parameter is required for generic search terms to be searched in the database,
 and from the special search terms, only a subset is available for use. See the searchterm section 
 
 The other search, solr-backed, allows the usage of wild cards and other forms of fuzziness, but requires the solr component
@@ -647,9 +650,9 @@ Search for all nodes with the term 'budget' in the `cm:content` property (fullte
 }
 ```
 
-### Json response
+### JSON response
 
-The search rest call returns a JSON object of the following form:
+The search REST call returns a JSON object of the following form:
 ```json
 {
   "noderefs": [ // List of noderefs

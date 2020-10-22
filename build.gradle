@@ -36,7 +36,7 @@ dockerCompose {
 
 task initCreateDocs() {
     doLast {
-        copyResources('developer')
+        copyResources('user')
     }
 }
 
@@ -80,7 +80,7 @@ import eu.xenit.upload.artifacts.gradle.UploadArtifactsTask
 
 task uploadArtifacts(type: UploadArtifactsTask) {
     dependsOn createDocs
-    product = 'alfred-api'
+    product = 'Alfred-API'
     version = project.version
     artifacts = {
         createDocs
