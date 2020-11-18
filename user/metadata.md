@@ -1,27 +1,25 @@
 ---
 title:
-    - Alfred Api 
+    - Alfred API 
     - User Guide
-title-slogan:
-    - TODO: THIS SHOULD NOT BE HERE
 date: 01/11/2020
-document-reference: Api/User Guide/2.7.0
+document-reference: Alfred API/User Guide
 document-revision: 0.1
 copyright-year: 2020
 
-product-version: 2.7.0
 product-color: 33a89f
-frontpage-background-img: images/AlfredApi-FrontCover.jpg
-backcover-background-img: images/AlfredApi-BackCover.jpg
-footer-img: images/AlfredApi-Footer-Logo.png
+frontpage-background-img: images/AlfredAPI-FrontCover.jpg
+backcover-background-img: images/AlfredAPI-BackCover.jpg
+footer-img: images/AlfredAPI-Footer-Logo.jpg
 
 pandoc-args:
     template: manual
 
 tables: true
 numbersections: true
-secnumdepth: 3
+secnumdepth: 7
 toc: true
-toc-depth: 3
+toc-depth: 7
 fontawesome: true
+
 ---

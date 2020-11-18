@@ -1,6 +1,6 @@
-# Alfred-api-doc
+# Alfred-API-doc
 
-Docs project for Alfred Api
+Docs project for Alfred API
 
 ## Generate manual
 

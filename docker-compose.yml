@@ -1,23 +1,10 @@
 version: "3"
 
 services:
+
   user:
     image: hub.xenit.eu/private/xenit-markdowntopdf:latest
     volumes:
       - ./build/src/user:/docs:z
     working_dir: /docs
-    command: user-guide.md -o Alfred_Api_User_Guide.pdf --info
-
-  installation:
-    image: hub.xenit.eu/private/xenit-markdowntopdf:latest
-    volumes:
-      - ./build/src/installation:/docs:z
-    working_dir: /docs
-    command: installation-guide.md -o Alfred_Api_Installation_Guide.pdf
-
-  developer:
-    image: hub.xenit.eu/private/xenit-markdowntopdf:latest
-    volumes:
-      - ./build/src/developer:/docs:z
-    working_dir: /docs
-    command: developer-guide.md -o Alfred_Api_Developer_Guide.pdf
+    command: user-guide.md --lua-filter latex-h-break.lua -o Alfred_API_User_Guide.pdf

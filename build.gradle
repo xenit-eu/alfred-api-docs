@@ -36,8 +36,6 @@ dockerCompose {
 
 task initCreateDocs() {
     doLast {
-        copyResources('developer')
-        copyResources('installation')
         copyResources('user')
     }
 }
@@ -76,22 +74,13 @@ def copyResources(String source) {
         from source
         into targetDir
     }
-    copySharedImageResources(source)
-}
-
-def copySharedImageResources(String source) {
-    def targetDir = "${project.buildDir}/src/${source}/images"
-    copy {
-        from 'images'
-        into targetDir
-    }
 }
 
 import eu.xenit.upload.artifacts.gradle.UploadArtifactsTask
 
 task uploadArtifacts(type: UploadArtifactsTask) {
     dependsOn createDocs
-    product = 'alfred-api'
+    product = 'Alfred-API'
     version = project.version
     artifacts = {
         createDocs
