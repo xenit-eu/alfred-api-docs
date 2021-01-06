@@ -196,9 +196,7 @@ The `DictionaryService` provides meta-information about the metadata model.
 It allows to fetch information about registered types, aspect and properties.
 
 ### Viewing JavaDoc
-Full JavaDoc documentation of the Alfred API Java interface is available in the JavaDoc. You can
-view the JavaDoc by browsing to `/alfresco/s/apix/javadocs/index.html` on your Alfresco host that
-has Alfred API installed.
+Full JavaDoc documentation of the Alfred API Java interface is available on this site at [https://docs.xenit.eu/alfred-api/stable-user/javadoc/](https://docs.xenit.eu/alfred-api/stable-user/javadoc/).
 
 # Java API
 
