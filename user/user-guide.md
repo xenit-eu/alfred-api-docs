@@ -197,7 +197,8 @@ The `DictionaryService` provides meta-information about the metadata model.
 It allows to fetch information about registered types, aspect and properties.
 
 ### Viewing JavaDoc
-Full JavaDoc documentation of the Alfred API Java interface is available on this site at [https://docs.xenit.eu/alfred-api/stable-user/javadoc/](https://docs.xenit.eu/alfred-api/stable-user/javadoc/).
+Full JavaDoc documentation of the Alfred API Java interface is available on this site at 
+[https://docs.xenit.eu/alfred-api/stable-user/javadoc/](https://docs.xenit.eu/alfred-api/stable-user/javadoc/).
 
 # Java API
 
@@ -208,13 +209,15 @@ When the API is installed, all of its service are available as beans and can be 
 
 # REST API
 
-For a full overview of the REST API, please refer to [the swagger specification](https://demo.xenit.eu/alfresco/s/apix/v1/docs/ui.html).
+For a full overview of the REST API, please refer to 
+[the swagger specification](https://demo.xenit.eu/alfresco/s/apix/v1/docs/ui.html).
 
 ## Search Requests
 
 ### Query
 Object containing subcomponents that build the requested query.
-All queries are translated to Alfresco Full Text Search (see [AFTS](https://community.alfresco.com/docs/DOC-5729-full-text-search-query-syntax)) by Alfred API when executed
+All queries are translated to Alfresco Full Text Search (see 
+[AFTS](https://community.alfresco.com/docs/DOC-5729-full-text-search-query-syntax)) by Alfred API when executed.
 
 #### Syntax
 
@@ -633,7 +636,8 @@ Search for the first 10 nodes in the `cm:content` namespace with facets:
 }
 ```
 
-Search for all nodes with the term 'budget' in the `cm:content` property (fulltext), and show two highlighted hits with delimiter \\<highlight>\\</highlight>:
+Search for all nodes with the term 'budget' in the `cm:content` property (fulltext), and show two highlighted hits with
+delimiter \\<highlight>\\</highlight>:
 ```json
 {
     "query": {
@@ -805,7 +809,8 @@ Indicates request sent by client was understood and accepted.
 
 * **200 OK**: Generic success.
 * **202 Accepted**: The request was successful and will be processed asynchronously.
-* **207 Multi-Status**: A bulk request completed successfully. These responses should contain multi-status response that can be correlated to each individual request in the bulk request. Can be returned even if individual requests fail.
+* **207 Multi-Status**: A bulk request completed successfully. These responses should contain multi-status response that
+  can be correlated to each individual request in the bulk request. Can be returned even if individual requests fail.
 
 
 ### 3xx Redirection
@@ -825,7 +830,8 @@ A body *may* be provided in the response that clarifies the error.
 * **400 Bad Request**: Generic client error.
 * **401 Unauthorized**: User must log in.
 * **403 Forbidden**: User not authorized to use this resource.
-* **404 Not Found**: Requested resource not found. Returned also for e.g. requesting a node with an incorrect id, as well as unhandled URI's. For security reasons, a 404 can aso be returned when the requester has insufficient permissions.
+* **404 Not Found**: Requested resource not found. Returned also for e.g. requesting a node with an incorrect id, as 
+  well as unhandled URI's. For security reasons, a 404 can aso be returned when the requester has insufficient permissions.
 * **405 Method Not Allowed**: A request method is not supported (e.g. PUT on an endpoint that only accepts GET).
 
 
@@ -857,12 +863,20 @@ Acquisition and installation instructions can be found [here](https://github.com
 Artifacts can be freely obtained through [Maven Central](https://search.maven.org/search?q=g:eu.xenit.apix).
 The application is available as an Alfresco amp artifact, which is the preferred distribution for production environments. 
 
-To install the AMP, follow the Alfresco AMP installation guidelines your version of Alfresco: [5.0](https://docs.alfresco.com/5.0/tasks/amp-install.html), [5.1](https://docs.alfresco.com/5.1/tasks/amp-install.html), [5.2](https://docs.alfresco.com/5.2/tasks/amp-install.html), [6.0](https://docs.alfresco.com/6.0/tasks/amp-install.html), [6.1](https://docs.alfresco.com/6.1/tasks/amp-install.html) or [6.2](https://docs.alfresco.com/6.2/tasks/amp-install.html).
+To install the AMP, follow the Alfresco AMP installation guidelines your version of Alfresco: 
+
+* [5.0](https://docs.alfresco.com/5.0/tasks/amp-install.html)
+* [5.1](https://docs.alfresco.com/5.1/tasks/amp-install.html)
+* [5.2](https://docs.alfresco.com/5.2/tasks/amp-install.html)
+* [6.0](https://docs.alfresco.com/6.0/tasks/amp-install.html)
+* [6.1](https://docs.alfresco.com/6.1/tasks/amp-install.html)
+* [6.2](https://docs.alfresco.com/6.2/tasks/amp-install.html).
 
 A Dynamic Extensions jar artifact is also available.
 
 ### Source code
-The source code is available from [Github](https://github.com/xenit-eu/alfred-api), but building the artifacts requires access to Alfresco Enterprise libraries to satisfy enterprise dependencies.
+The source code is available from [Github](https://github.com/xenit-eu/alfred-api), but building the artifacts requires
+access to Alfresco Enterprise libraries to satisfy Enterprise dependencies.
 
 #### Note on naming convention
 Due to legacy support, the older `apix` name is being retained for the time being.
