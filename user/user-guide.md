@@ -55,6 +55,7 @@ Again, where `VERSION` is e.g. `51`.
 However, this starts (and afterwards stops) docker containers. This includes starting an Alfresco container,
  adding a startup time of several minutes. To circumvent this you also run the test on already running containers with
  for example:
+
  ```bash
 ./gradlew -x composeUp -x composeDown :apix-integrationtests:test-61:integrationTest -Pprotocol=http -Phost=localhost -Pport=8061
 ```
@@ -72,8 +73,8 @@ Again, where `VERSION` is e.g. `51`.
 
 #### Deploy code changes for development
 
-In a development scenario, it is possible to upload code changes to a running alfresco through dynamic extensions.
-This requires the running alfresco to already have an older or equal version of alfred-api installed, and
+In a development scenario, it is possible to upload code changes to a running Alfresco through dynamic extensions.
+This requires the running Alfresco to already have an older or equal version of alfred-api installed, and
 the use of the jar artifact instead of the amp to do the new install. 
 The JAR has the format `apix-impl-{ALFRESCO-VERSION}-{APIX-VERSION}.jar` and can be found under 
 `apix-impl/{ALFRESCO-VERSION}/build/libs/`, where `ALFRESCO-VERSION` is one of *(50|51|52|60|61|62)*.
@@ -200,8 +201,8 @@ Full JavaDoc documentation of the Alfred API Java interface is available on this
 
 # Java API
 
-The java API is the core to exposing alfresco functionality and normalizing operations across version.
-Any extensions written while depending on Alfred API can be easily ported to a new alfresco version.
+The Java API is the core to exposing Alfresco functionality and normalizing operations across version.
+Any extensions written while depending on Alfred API can be easily ported to a new Alfresco version.
 
 When the API is installed, all of its service are available as beans and can be wired into your own classes.
 
@@ -217,12 +218,12 @@ All queries are translated to Alfresco Full Text Search (see [AFTS](https://comm
 
 #### Syntax
 
-The query parameter takes a tree structure of searchnodes as its argument.
-A searchnode is either an operator or a search term.
+The query parameter takes a tree structure of search nodes as its argument.
+A search node is either an operator, or a search term.
 
 ##### Operators
 
-Operators currently include only the standard AND, OR & NOT logical operations.
+Operators currently include only the standard `AND`, `OR` and `NOT` logical operations.
 An operator is structured in the JSON payload as a named list.
 
 * And
@@ -351,7 +352,7 @@ Lookup for any nodes which have the give aspect.
 
 `Supports transactional metadata queries`
 
-Lookup for a specific alfresco noderef.
+Lookup for a specific Alfresco noderef.
 ```json
 { "noderef": "workspace://SpacesStore/c4ebd508-b9e3-4c48-9e93-cdd774af8bbc" }
 ```
@@ -378,7 +379,7 @@ Lookup for any nodes with the given node as parent. Takes a noderef as argument.
 
 * text
 
-Lookup for any nodes that have given text in their content. Requires content of nodes to be indexed by solr to be found.
+Lookup for any nodes that have given text in their content. Requires content of nodes to be indexed by Solr to be found.
 ```json
 { "text": "xenit solutions" }
 ```
@@ -425,9 +426,9 @@ Lookup for any nodes where the value of the given property is set and not null.
 { "isnotnull": "cm:author" }
 ```
 
-**Note Unsupported terms**
+**Unsupported terms**
 
-The following terms are available in alfresco, but are currently not supported by Alfred API:
+The following terms are available in Alfresco, but are currently not supported by Alfred API:
 
 * isroot
 * tx
@@ -438,9 +439,10 @@ The following terms are available in alfresco, but are currently not supported b
 * exactaspect
 * tag
 
+
 **Generic terms**
 
-Generic terms are searchterms for any given property with any given value or range.
+Generic terms are search terms for any given property with any given value or range.
 ```json
 { "property": 
     {
@@ -494,7 +496,7 @@ Options to page through the search results by setting a skipcount and a page siz
 `Optional`
 
 Options to enable facets. This will return facet results as configured on the server.
-The alfresco limit and minCount parameters are not implemented.
+The Alfresco `limit` and `minCount` parameters are not implemented.
 
 **Note:** facets with 0 hits are not returned in the result
 ```json
@@ -532,6 +534,7 @@ Expression based sorting is not implemented.
 `Optional`
 
 Option to request specific consistency. Options are:
+
 * `EVENTUAL`
 * `TRANSACTIONAL`
 * `TRANSACTIONAL_IF_POSSIBLE` (default)
@@ -541,20 +544,20 @@ Option to request specific consistency. Options are:
 }
 ```
 
-#### Note on search, consistency and fuzzyness
+#### Note on search, consistency and fuzziness
 
-Alfresco internally supports 2 types of searchqueries: database-backed and solr-backed. Based on the server configuration
+Alfresco internally supports two types of search queries: database-backed and Solr-backed. Based on the server configuration
 and the search query, it will determine which of these 2 to use. Alfresco will attempt to use the database, but for any query 
-on indexed properties, content or for fuzzy matching, solr is required.
+on indexed properties, content or for fuzzy matching, Solr is required.
 
 In the documentation database-backed queries are known as `Transactional Metadata Queries` or `TDMQ`'s.
 To enable TDMQ's for Alfred API the `exact` parameter is required for generic search terms to be searched in the database,
-and from the special search terms, only a subset is available for use. See the searchterm section 
+and from the special search terms, only a subset is available for use. See the search term section 
 
-The other search, solr-backed, allows the usage of wild cards and other forms of fuzziness, but requires the solr component
-to build indexes against the alfresco repository. This means that some time and resources are spent to bring the search index
+The other search, Solr-backed, allows the usage of wild cards and other forms of fuzziness, but requires the Solr component
+to build indexes against the Alfresco repository. This means that some time and resources are spent to bring the search index
 up to date with the repository. As a consequence, after any given change, a window of time exists where a searchrequest against
-solr will return a result inconsistent with the repo. This effect will pass with time, hence the name eventual consistency.
+Solr will return a result inconsistent with the repo. This effect will pass with time, hence the name eventual consistency.
 
 ### locale
 
@@ -571,10 +574,10 @@ Options to request specific locale and encoding options.
 
 `Optional`
 
-Options to change the target alfresco workspace. This would allow searches on the archive or on custom workspaces.
+Options to change the target Alfresco workspace. This would allow searches on the archive or on custom workspaces.
 A workspace is in this context defined by the `workspace name` + the protocol delimiter `://` + `the target store name`.
 
-**Note**: if the target store is not indexed by solr, eventually consistent queries will result in errors.
+**Note**: if the target store is not indexed by Solr, eventually consistent queries will result in errors.
 ```json
 {
   "workspace": "archive://SpacesStore"
@@ -583,7 +586,7 @@ A workspace is in this context defined by the `workspace name` + the protocol de
 
 ### highlight
 
-`Requires alfresco version 5.2 or higher`
+`Requires Alfresco version 5.2 or higher`
 
 `Optional`
 
@@ -591,7 +594,8 @@ Options to change the highlight configuration.
 Minimal requirement is the `fields` array, which takes object containing at least the `field` property. 
 Each list element specifies a property on which higlighting needs to be applied. 
 When no fields are specified, the call defaults to `cm:content` as field.
-Full documentation can be found on the alfresco documentation page: 
+Full documentation can be found on the Alfresco documentation page: 
+
 * [5.2](https://docs.alfresco.com/5.2/concepts/search-api-highlight.html)
 * [6.0](https://docs.alfresco.com/6.0/concepts/search-api-highlight.html)
 * [6.1](https://docs.alfresco.com/6.1/concepts/search-api-highlight.html)
@@ -685,7 +689,7 @@ The search REST call returns a JSON object of the following form:
   ],
   "totalResultCount": 2, //Sum of all results
   "highlights": {
-      "noderefs": { //A set of objects with an entry for each noderef for which a highligth can be returned
+      "noderefs": { //A set of objects with an entry for each noderef for which a highlight can be returned
           "workspace://SpacesStore/e818fd1c-262e-43f1-8751-461cd8de9293": [ //list of highlights per specified field for the given node
               {
                   "field": "cm:name",
@@ -697,21 +701,20 @@ The search REST call returns a JSON object of the following form:
       }
   }
 }
-
 ```
 
 ### Additional notes
 
 #### Date format
 
-Dates and times must be specified int the ISO-8601 format
+Dates and times must be specified in [ISO-8601](https://www.iso.org/iso-8601-date-and-time-format.html) format.
 
 
 ## Usage Example
 
 In this example a new node will be created and its metadata set:
 
-**1.** Find the default alfresco folder named "Shared" to use as parent folder for the new node.
+**1.** Find the default Alfresco folder named "Shared" to use as parent folder for the new node.
 ```bash
 curl -X POST \
 --header "Authorization: Basic a8d46fw84649" \
@@ -852,13 +855,13 @@ Acquisition and installation instructions can be found [here](https://github.com
 ## Artifacts
 ### Prebuild
 Artifacts can be freely obtained through [Maven Central](https://search.maven.org/search?q=g:eu.xenit.apix).
-The application is available as an alfresco amp artifact, which is the preferred distribution for production environments. 
+The application is available as an Alfresco amp artifact, which is the preferred distribution for production environments. 
 
 To install the AMP, follow the Alfresco AMP installation guidelines your version of Alfresco: [5.0](https://docs.alfresco.com/5.0/tasks/amp-install.html), [5.1](https://docs.alfresco.com/5.1/tasks/amp-install.html), [5.2](https://docs.alfresco.com/5.2/tasks/amp-install.html), [6.0](https://docs.alfresco.com/6.0/tasks/amp-install.html), [6.1](https://docs.alfresco.com/6.1/tasks/amp-install.html) or [6.2](https://docs.alfresco.com/6.2/tasks/amp-install.html).
 
 A Dynamic Extensions jar artifact is also available.
 
-### Sourcecode
+### Source code
 The source code is available from [Github](https://github.com/xenit-eu/alfred-api), but building the artifacts requires access to Alfresco Enterprise libraries to satisfy enterprise dependencies.
 
 #### Note on naming convention
