@@ -43,14 +43,14 @@ The following command starts up all docker containers required for an Alfresco r
 ```bash
 ./gradlew :apix-docker:docker-${VERSION}:composeUp --info
 ```
-Where `VERSION` is e.g. `51`.
+Where `VERSION` is e.g. `70`.
 
 
 ### Run integration tests
 ```bash
 ./gradlew :apix-integrationtests:test-${VERSION}:integrationTest
 ```  
-Again, where `VERSION` is e.g. `51`.
+Again, where `VERSION` is e.g. `70`.
 
 However, this starts (and afterwards stops) docker containers. This includes starting an Alfresco container,
  adding a startup time of several minutes. To circumvent this you also run the test on already running containers with
@@ -69,7 +69,7 @@ portmapping `8000:8000`. This file does not get loaded when running in Jenkins.
 3. Run the integration tests (see section above).
 4. Wait until the container is started and healthy, then attach the debugger.
 
-Again, where `VERSION` is e.g. `51`.
+Again, where `VERSION` is e.g. `70`.
 
 #### Deploy code changes for development
 
@@ -77,7 +77,7 @@ In a development scenario, it is possible to upload code changes to a running Al
 This requires the running Alfresco to already have an older or equal version of alfred-api installed, and
 the use of the jar artifact instead of the amp to do the new install. 
 The JAR has the format `apix-impl-{ALFRESCO-VERSION}-{APIX-VERSION}.jar` and can be found under 
-`apix-impl/{ALFRESCO-VERSION}/build/libs/`, where `ALFRESCO-VERSION` is one of *(50|51|52|60|61|62)*.
+`apix-impl/{ALFRESCO-VERSION}/build/libs/`, where `ALFRESCO-VERSION` is one of *(52|61|62|70)*.
 The new installation can be done either through the DE web interface, or with the following gradle task.
 ```bash
 ./gradlew :apix-impl:apix-impl-{ALFRESCO-VERSION}:installBundle -Phost={ALFRESCO-HOST} -Pport={ALFRESCO-PORT}
@@ -87,7 +87,7 @@ The new installation can be done either through the DE web interface, or with th
 fixed port in the *docker-compose.yml* of the version you are working with. (The rationale behind using 
 variable ephemeral ports is that during parallel builds on Jenkins port clashes must be avoided.)
 
-For example for version 5.1, change in *apix-docker/51/docker-compose.yml* 
+For example for version 7.0, change in *apix-docker/70/docker-compose.yml* 
 the ports line from:
 ```yaml
 services:
@@ -100,12 +100,12 @@ to:
 services:
   alfresco-core:
     ports:
-      - ${DOCKER_IP}:9051:8080
+      - ${DOCKER_IP}:9070:8080
 ```
 and then restart the containers with:
 
 ```bash
-./gradlew :apix-docker:docker-51:composeUp --info
+./gradlew :apix-docker:docker-70:composeUp --info
 ```
 
 # Alfred API Concepts
@@ -589,8 +589,6 @@ A workspace is in this context defined by the `workspace name` + the protocol de
 
 ### highlight
 
-`Requires Alfresco version 5.2 or higher`
-
 `Optional`
 
 Options to change the highlight configuration.
@@ -599,10 +597,10 @@ Each list element specifies a property on which higlighting needs to be applied.
 When no fields are specified, the call defaults to `cm:content` as field.
 Full documentation can be found on the Alfresco documentation page: 
 
-* [5.2](https://docs.alfresco.com/5.2/concepts/search-api-highlight.html)
-* [6.0](https://docs.alfresco.com/6.0/concepts/search-api-highlight.html)
-* [6.1](https://docs.alfresco.com/6.1/concepts/search-api-highlight.html)
-* [6.2](https://docs.alfresco.com/6.2/concepts/search-api-highlight.html)
+* [5.2](https://docs.alfresco.com/content-services/5.2/develop/rest-api-guide/searching/#term-highlighting-search)
+* [6.1](https://docs.alfresco.com/content-services/6.1/develop/rest-api-guide/searching/#term-highlighting-search)
+* [6.2](https://docs.alfresco.com/content-services/6.2/develop/rest-api-guide/searching/#term-highlighting-search)
+* [7.0](https://docs.alfresco.com/content-services/latest/develop/rest-api-guide/searching/#term-highlighting-search)
 
 ```json
 {
@@ -847,30 +845,26 @@ Indicates unexpected failures.
 ## Supported Alfresco versions
 Currently Alfred API supports the following Alfresco versions:
 
-* 5.0
-* 5.1
 * 5.2
-* 6.0
 * 6.1
 * 6.2
+* 7.0
 
 ## Pre-requisites
 Alfred API requires **_Dynamic Extensions For Alfresco_**, version 2.0.1 or later. This module should be installed first.
 Acquisition and installation instructions can be found [here](https://github.com/xenit-eu/dynamic-extensions-for-alfresco).
 
 ## Artifacts
-### Prebuild
+### Prebuilt
 Artifacts can be freely obtained through [Maven Central](https://search.maven.org/search?q=g:eu.xenit.apix).
 The application is available as an Alfresco amp artifact, which is the preferred distribution for production environments. 
 
 To install the AMP, follow the Alfresco AMP installation guidelines your version of Alfresco: 
 
-* [5.0](https://docs.alfresco.com/5.0/tasks/amp-install.html)
-* [5.1](https://docs.alfresco.com/5.1/tasks/amp-install.html)
-* [5.2](https://docs.alfresco.com/5.2/tasks/amp-install.html)
-* [6.0](https://docs.alfresco.com/6.0/tasks/amp-install.html)
-* [6.1](https://docs.alfresco.com/6.1/tasks/amp-install.html)
-* [6.2](https://docs.alfresco.com/6.2/tasks/amp-install.html).
+* [5.2](https://docs.alfresco.com/content-services/5.2/develop/extension-packaging/#running-the-mmt)
+* [6.1](https://docs.alfresco.com/content-services/6.1/install/zip/amp/)
+* [6.2](https://docs.alfresco.com/content-services/6.2/install/zip/amp/)
+* [7.0](https://docs.alfresco.com/content-services/latest/install/zip/amp/) 
 
 A Dynamic Extensions jar artifact is also available.
 
