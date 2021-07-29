@@ -132,24 +132,16 @@ Conversion between Alfresco and Alfred API data objects is the responsibility of
 `ApixToAlfrescoConversion` service. It is also possible to construct an Alfred API data object by
 passing its string representation to the constructor.
 
-## REST API
-The Alfred REST API is a thin wrapper around the Java abstraction layer. It converts its received
-parameters to the corresponding Alfred API data objects, then calls the corresponding service and
-serializes its return value to JSON.
 
-### Developer notes on search syntax
+# Java API
+The Java API is the core to exposing Alfresco functionality and normalizing operations across version.
+Any extensions written while depending on Alfred API can be easily ported to a new Alfresco version.
 
-#### Unimplemented search options:
-
-These options have some code towards handling, but are not implemented such that they are used in the search.
-
-* `facets.mincount`
-* `facets.limit`
-* `orderBy.expression`
+When the API is installed, all of its service are available as beans and can be wired into your own classes.
 
 ## Services
-Only the most important services are described here. Full documentation is available in 
-[the generated JavaDoc](#viewing-javadoc).
+Only the most important services are described below. Full documentation is available in
+[the generated JavaDoc](https://docs.xenit.eu/alfred-api/stable-user/javadoc/).
 
 ### NodeService
 The `NodeService` provides operations on nodes.
@@ -175,7 +167,7 @@ as well as pagination, faceting and ordering options.
 \undef{EXAMPLE_IMPORTS}
 \undef{EXAMPLE_SEARCH_QUERY_OPTS}
 
-The query itself can be constructed using the `QueryBuilder`, which provides a fluent interface to 
+The query itself can be constructed using the `QueryBuilder`, which provides a fluent interface to
 build search queries.
 
 \define{EXAMPLE_SEARCH_QUERY_QUERY}
@@ -184,8 +176,8 @@ build search queries.
 ```
 \undef{EXAMPLE_SEARCH_QUERY_QUERY}
 
-When using the REST API, a JSON payload describing the search query has to be POST'ed to the 
-`apix/v1/search` endpoint. 
+When using the REST API, a JSON payload describing the search query has to be POST'ed to the
+`apix/v1/search` endpoint.
 This JSON document reflects the node structure created by the query builder, and is shown below:
 
 ```json
@@ -196,21 +188,15 @@ This JSON document reflects the node structure created by the query builder, and
 The `DictionaryService` provides meta-information about the metadata model.
 It allows to fetch information about registered types, aspect and properties.
 
-### Viewing JavaDoc
-Full JavaDoc documentation of the Alfred API Java interface is available on this site at 
-[https://docs.xenit.eu/alfred-api/stable-user/javadoc/](https://docs.xenit.eu/alfred-api/stable-user/javadoc/).
-
-# Java API
-
-The Java API is the core to exposing Alfresco functionality and normalizing operations across version.
-Any extensions written while depending on Alfred API can be easily ported to a new Alfresco version.
-
-When the API is installed, all of its service are available as beans and can be wired into your own classes.
 
 # REST API
+The Alfred REST API is a thin wrapper around the Java abstraction layer. It converts its received
+parameters to the corresponding Alfred API data objects, then calls the corresponding service and
+serializes its return value to JSON.
 
 For a full overview of the REST API, please refer to 
 [the swagger specification](https://demo.xenit.eu/alfresco/s/apix/v1/docs/ui.html).
+
 
 ## Search Requests
 
@@ -218,6 +204,7 @@ For a full overview of the REST API, please refer to
 Object containing subcomponents that build the requested query.
 All queries are translated to Alfresco Full Text Search (see 
 [AFTS](https://community.alfresco.com/docs/DOC-5729-full-text-search-query-syntax)) by Alfred API when executed.
+
 
 #### Syntax
 
@@ -710,6 +697,13 @@ The search REST call returns a JSON object of the following form:
 #### Date format
 
 Dates and times must be specified in [ISO-8601](https://www.iso.org/iso-8601-date-and-time-format.html) format.
+
+#### Unimplemented search options:
+These options have some code towards handling, but are not implemented such that they are used in the search.
+
+* `facets.mincount`
+* `facets.limit`
+* `orderBy.expression`
 
 
 ## Usage Example
