@@ -8,106 +8,6 @@ It also provides functional grouping of related operations from the Alfresco Pub
 and additional endpoints that are not supported by the Alfresco Public API.
  
 
-# Development
-
-## Rules for pull requests
-* Common sense trumps all rules.
-* For every pull request please extend the [CHANGELOG.md](https://github.com/xenit-eu/alfred-api/blob/master/CHANGELOG.md).
-* Do not make breaking changes since this is an API used by customers. Breaking changes include 
-  adding, changing or removing endpoints or JSON objects used in requests and responses.
-  * If you are forced to make a breaking change:
-    * Notify maintainers
-    * Add a note to the changelog with upgrade instructions
-    * Notify all customers at the next release
-* When working in REST code, please comply to **REST HTTP result codes** policy outlined in the
-  [user guide](https://docs.xenit.eu/alfred-api/stable-user/rest-api/index.html#rest-http-result-codes).
-* Prefer unit tests over integration tests to keep builds fast
-  
-## Project structure
-* *apix-interface* builds the interface of Alfred API. This part is agnostic of the 
-Alfresco version used.
-* *apix-rest-v1* builds the REST API of Alfred API. 
-* *apix-impl* builds the AMP which is the main deliverable for Alfred API. The AMP contains the JARs of 
-*apix-interface* and *apix-rest-v1*.
-  * The top directory also contains code shared over different Alfresco versions.
-  * *apix-impl/xx* contains all code per Alfresco version. It has a *src/java* folder
-  for code specific to that Alfresco version and a *src/java-shared code* for the code shared between
-  versions. This code is automatically symlinked from the *apix-impl* directory.   
-* *apix-integrationtests* contains the integration tests for each Alfresco version.
-
-## How to
-
-### Run
-
-The following command starts up all docker containers required for an Alfresco running Alfred API.
-```bash
-./gradlew :apix-docker:docker-${VERSION}:composeUp --info
-```
-Where `VERSION` is e.g. `70`.
-
-
-### Run integration tests
-```bash
-./gradlew :apix-integrationtests:test-${VERSION}:integrationTest
-```  
-Again, where `VERSION` is e.g. `70`.
-
-However, this starts (and afterwards stops) docker containers. This includes starting an Alfresco container,
- adding a startup time of several minutes. To circumvent this you also run the test on already running containers with
- for example:
-
- ```bash
-./gradlew -x composeUp -x composeDown :apix-integrationtests:test-61:integrationTest -Pprotocol=http -Phost=localhost -Pport=8061
-```
-
-
-### Run integration tests under debugger
-1. Debugging settings are already added by `apix-docker/${VERSION}/debug-extension.docker-compose.yml`, including a 
-portmapping `8000:8000`. This file does not get loaded when running in Jenkins.
-2. Prepare your remote debugger in IntelliJ and set breakpoints where you want in your tests
- (or Alfred API code).
-3. Run the integration tests (see section above).
-4. Wait until the container is started and healthy, then attach the debugger.
-
-Again, where `VERSION` is e.g. `70`.
-
-#### Deploy code changes for development
-
-In a development scenario, it is possible to upload code changes to a running Alfresco through dynamic extensions.
-This requires the running Alfresco to already have an older or equal version of alfred-api installed, and
-the use of the jar artifact instead of the amp to do the new install. 
-The JAR has the format `apix-impl-{ALFRESCO-VERSION}-{APIX-VERSION}.jar` and can be found under 
-`apix-impl/{ALFRESCO-VERSION}/build/libs/`, where `ALFRESCO-VERSION` is one of *(52|61|62|70)*.
-The new installation can be done either through the DE web interface, or with the following gradle task.
-```bash
-./gradlew :apix-impl:apix-impl-{ALFRESCO-VERSION}:installBundle -Phost={ALFRESCO-HOST} -Pport={ALFRESCO-PORT}
-```
-
-*Protip:* If you get tired of changing the port after every `docker-compose up`, you can temporarily put a
-fixed port in the *docker-compose.yml* of the version you are working with. (The rationale behind using 
-variable ephemeral ports is that during parallel builds on Jenkins port clashes must be avoided.)
-
-For example for version 7.0, change in *apix-docker/70/docker-compose.yml* 
-the ports line from:
-```yaml
-services:
-  alfresco-core:
-    ports:
-      - ${DOCKER_IP}:8080
-``` 
-to: 
-```yaml
-services:
-  alfresco-core:
-    ports:
-      - ${DOCKER_IP}:9070:8080
-```
-and then restart the containers with:
-
-```bash
-./gradlew :apix-docker:docker-70:composeUp --info
-```
-
 # Alfred API Concepts
 Alfred API is composed of two logical layers.
 
@@ -132,24 +32,16 @@ Conversion between Alfresco and Alfred API data objects is the responsibility of
 `ApixToAlfrescoConversion` service. It is also possible to construct an Alfred API data object by
 passing its string representation to the constructor.
 
-## REST API
-The Alfred REST API is a thin wrapper around the Java abstraction layer. It converts its received
-parameters to the corresponding Alfred API data objects, then calls the corresponding service and
-serializes its return value to JSON.
 
-### Developer notes on search syntax
+# Java API
+The Java API is the core to exposing Alfresco functionality and normalizing operations across version.
+Any extensions written while depending on Alfred API can be easily ported to a new Alfresco version.
 
-#### Unimplemented search options:
-
-These options have some code towards handling, but are not implemented such that they are used in the search.
-
-* `facets.mincount`
-* `facets.limit`
-* `orderBy.expression`
+When the API is installed, all of its service are available as beans and can be wired into your own classes.
 
 ## Services
-Only the most important services are described here. Full documentation is available in 
-[the generated JavaDoc](#viewing-javadoc).
+Only the most important services are described below. Full documentation is available in
+[the generated JavaDoc](https://docs.xenit.eu/alfred-api/stable-user/javadoc/).
 
 ### NodeService
 The `NodeService` provides operations on nodes.
@@ -175,7 +67,7 @@ as well as pagination, faceting and ordering options.
 \undef{EXAMPLE_IMPORTS}
 \undef{EXAMPLE_SEARCH_QUERY_OPTS}
 
-The query itself can be constructed using the `QueryBuilder`, which provides a fluent interface to 
+The query itself can be constructed using the `QueryBuilder`, which provides a fluent interface to
 build search queries.
 
 \define{EXAMPLE_SEARCH_QUERY_QUERY}
@@ -184,8 +76,8 @@ build search queries.
 ```
 \undef{EXAMPLE_SEARCH_QUERY_QUERY}
 
-When using the REST API, a JSON payload describing the search query has to be POST'ed to the 
-`apix/v1/search` endpoint. 
+When using the REST API, a JSON payload describing the search query has to be POST'ed to the
+`apix/v1/search` endpoint.
 This JSON document reflects the node structure created by the query builder, and is shown below:
 
 ```json
@@ -196,21 +88,15 @@ This JSON document reflects the node structure created by the query builder, and
 The `DictionaryService` provides meta-information about the metadata model.
 It allows to fetch information about registered types, aspect and properties.
 
-### Viewing JavaDoc
-Full JavaDoc documentation of the Alfred API Java interface is available on this site at 
-[https://docs.xenit.eu/alfred-api/stable-user/javadoc/](https://docs.xenit.eu/alfred-api/stable-user/javadoc/).
-
-# Java API
-
-The Java API is the core to exposing Alfresco functionality and normalizing operations across version.
-Any extensions written while depending on Alfred API can be easily ported to a new Alfresco version.
-
-When the API is installed, all of its service are available as beans and can be wired into your own classes.
 
 # REST API
+The Alfred REST API is a thin wrapper around the Java abstraction layer. It converts its received
+parameters to the corresponding Alfred API data objects, then calls the corresponding service and
+serializes its return value to JSON.
 
 For a full overview of the REST API, please refer to 
 [the swagger specification](https://demo.xenit.eu/alfresco/s/apix/v1/docs/ui.html).
+
 
 ## Search Requests
 
@@ -218,6 +104,7 @@ For a full overview of the REST API, please refer to
 Object containing subcomponents that build the requested query.
 All queries are translated to Alfresco Full Text Search (see 
 [AFTS](https://community.alfresco.com/docs/DOC-5729-full-text-search-query-syntax)) by Alfred API when executed.
+
 
 #### Syntax
 
@@ -711,6 +598,13 @@ The search REST call returns a JSON object of the following form:
 
 Dates and times must be specified in [ISO-8601](https://www.iso.org/iso-8601-date-and-time-format.html) format.
 
+#### Unimplemented search options:
+These options have some code towards handling, but are not implemented such that they are used in the search.
+
+* `facets.mincount`
+* `facets.limit`
+* `orderBy.expression`
+
 
 ## Usage Example
 
@@ -874,3 +768,105 @@ access to Alfresco Enterprise libraries to satisfy Enterprise dependencies.
 
 #### Note on naming convention
 Due to legacy support, the older `apix` name is being retained for the time being.
+
+
+# Contributing
+This chapter holds information for development on Alfred API itself.
+
+## Rules for pull requests
+* Common sense trumps all rules.
+* For every pull request please extend the [CHANGELOG.md](https://github.com/xenit-eu/alfred-api/blob/master/CHANGELOG.md).
+* Do not make breaking changes since this is an API used by customers. Breaking changes include
+  adding, changing or removing endpoints or JSON objects used in requests and responses.
+    * If you are forced to make a breaking change:
+        * Notify maintainers
+        * Add a note to the changelog with upgrade instructions
+        * Notify all customers at the next release
+* When working in REST code, please comply to **REST HTTP result codes** policy outlined in the
+  [user guide](https://docs.xenit.eu/alfred-api/stable-user/rest-api/index.html#rest-http-result-codes).
+* Prefer unit tests over integration tests to keep builds fast
+
+## Project structure
+* *apix-interface* builds the interface of Alfred API. This part is agnostic of the
+  Alfresco version used.
+* *apix-rest-v1* builds the REST API of Alfred API.
+* *apix-impl* builds the AMP which is the main deliverable for Alfred API. The AMP contains the JARs of
+  *apix-interface* and *apix-rest-v1*.
+    * The top directory also contains code shared over different Alfresco versions.
+    * *apix-impl/xx* contains all code per Alfresco version. It has a *src/java* folder
+      for code specific to that Alfresco version and a *src/java-shared code* for the code shared between
+      versions. This code is automatically symlinked from the *apix-impl* directory.
+* *apix-integrationtests* contains the integration tests for each Alfresco version.
+
+## How to
+
+### Run
+
+The following command starts up all docker containers required for an Alfresco running Alfred API.
+```bash
+./gradlew :apix-docker:docker-${VERSION}:composeUp --info
+```
+Where `VERSION` is e.g. `70`.
+
+
+### Run integration tests
+```bash
+./gradlew :apix-integrationtests:test-${VERSION}:integrationTest
+```  
+Again, where `VERSION` is e.g. `70`.
+
+However, this starts (and afterwards stops) docker containers. This includes starting an Alfresco container,
+adding a startup time of several minutes. To circumvent this you also run the test on already running containers with
+for example:
+
+ ```bash
+./gradlew -x composeUp -x composeDown :apix-integrationtests:test-61:integrationTest -Pprotocol=http -Phost=localhost -Pport=8061
+```
+
+
+### Run integration tests under debugger
+1. Debugging settings are already added by `apix-docker/${VERSION}/debug-extension.docker-compose.yml`, including a
+   portmapping `8000:8000`. This file does not get loaded when running in Jenkins.
+2. Prepare your remote debugger in IntelliJ and set breakpoints where you want in your tests
+   (or Alfred API code).
+3. Run the integration tests (see section above).
+4. Wait until the container is started and healthy, then attach the debugger.
+
+Again, where `VERSION` is e.g. `70`.
+
+#### Deploy code changes for development
+
+In a development scenario, it is possible to upload code changes to a running Alfresco through dynamic extensions.
+This requires the running Alfresco to already have an older or equal version of alfred-api installed, and
+the use of the jar artifact instead of the amp to do the new install.
+The JAR has the format `apix-impl-{ALFRESCO-VERSION}-{APIX-VERSION}.jar` and can be found under
+`apix-impl/{ALFRESCO-VERSION}/build/libs/`, where `ALFRESCO-VERSION` is one of *(52|61|62|70)*.
+The new installation can be done either through the DE web interface, or with the following gradle task.
+```bash
+./gradlew :apix-impl:apix-impl-{ALFRESCO-VERSION}:installBundle -Phost={ALFRESCO-HOST} -Pport={ALFRESCO-PORT}
+```
+
+*Protip:* If you get tired of changing the port after every `docker-compose up`, you can temporarily put a
+fixed port in the *docker-compose.yml* of the version you are working with. (The rationale behind using
+variable ephemeral ports is that during parallel builds on Jenkins port clashes must be avoided.)
+
+For example for version 7.0, change in *apix-docker/70/docker-compose.yml*
+the ports line from:
+```yaml
+services:
+  alfresco-core:
+    ports:
+      - ${DOCKER_IP}:8080
+``` 
+to:
+```yaml
+services:
+  alfresco-core:
+    ports:
+      - ${DOCKER_IP}:9070:8080
+```
+and then restart the containers with:
+
+```bash
+./gradlew :apix-docker:docker-70:composeUp --info
+```
