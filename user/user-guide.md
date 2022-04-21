@@ -487,7 +487,9 @@ Full documentation can be found on the Alfresco documentation page:
 * [5.2](https://docs.alfresco.com/content-services/5.2/develop/rest-api-guide/searching/#term-highlighting-search)
 * [6.1](https://docs.alfresco.com/content-services/6.1/develop/rest-api-guide/searching/#term-highlighting-search)
 * [6.2](https://docs.alfresco.com/content-services/6.2/develop/rest-api-guide/searching/#term-highlighting-search)
-* [7.0](https://docs.alfresco.com/content-services/latest/develop/rest-api-guide/searching/#term-highlighting-search)
+* [7.0](https://docs.alfresco.com/content-services/7.0/develop/rest-api-guide/searching/#term-highlighting-search)
+* [7.1](https://docs.alfresco.com/content-services/7.1/develop/rest-api-guide/searching/#term-highlighting-search)
+* [7.2](https://docs.alfresco.com/content-services/latest/develop/rest-api-guide/searching/#term-highlighting-search)
 
 ```json
 {
@@ -743,6 +745,8 @@ Currently Alfred API supports the following Alfresco versions:
 * 6.1
 * 6.2
 * 7.0
+* 7.1
+* 7.2
 
 ## Pre-requisites
 Alfred API requires **_Dynamic Extensions For Alfresco_**, version 2.0.1 or later. This module should be installed first.
@@ -758,7 +762,9 @@ To install the AMP, follow the Alfresco AMP installation guidelines your version
 * [5.2](https://docs.alfresco.com/content-services/5.2/develop/extension-packaging/#running-the-mmt)
 * [6.1](https://docs.alfresco.com/content-services/6.1/install/zip/amp/)
 * [6.2](https://docs.alfresco.com/content-services/6.2/install/zip/amp/)
-* [7.0](https://docs.alfresco.com/content-services/latest/install/zip/amp/) 
+* [7.0](https://docs.alfresco.com/content-services/7.0/install/zip/amp/)
+* [7.1](https://docs.alfresco.com/content-services/7.1/install/zip/amp/)
+* [7.2](https://docs.alfresco.com/content-services/latest/install/zip/amp/)
 
 A Dynamic Extensions jar artifact is also available.
 
@@ -806,14 +812,14 @@ The following command starts up all docker containers required for an Alfresco r
 ```bash
 ./gradlew :apix-docker:docker-${VERSION}:composeUp --info
 ```
-Where `VERSION` is e.g. `70`.
+Where `VERSION` is e.g. `72`.
 
 
 ### Run integration tests
 ```bash
 ./gradlew :apix-integrationtests:test-${VERSION}:integrationTest
 ```  
-Again, where `VERSION` is e.g. `70`.
+Again, where `VERSION` is e.g. `72`.
 
 However, this starts (and afterwards stops) docker containers. This includes starting an Alfresco container,
 adding a startup time of several minutes. To circumvent this you also run the test on already running containers with
@@ -832,7 +838,7 @@ for example:
 3. Run the integration tests (see section above).
 4. Wait until the container is started and healthy, then attach the debugger.
 
-Again, where `VERSION` is e.g. `70`.
+Again, where `VERSION` is e.g. `72`.
 
 #### Deploy code changes for development
 
@@ -840,7 +846,7 @@ In a development scenario, it is possible to upload code changes to a running Al
 This requires the running Alfresco to already have an older or equal version of alfred-api installed, and
 the use of the jar artifact instead of the amp to do the new install.
 The JAR has the format `apix-impl-{ALFRESCO-VERSION}-{APIX-VERSION}.jar` and can be found under
-`apix-impl/{ALFRESCO-VERSION}/build/libs/`, where `ALFRESCO-VERSION` is one of *(52|61|62|70)*.
+`apix-impl/{ALFRESCO-VERSION}/build/libs/`, where `ALFRESCO-VERSION` is one of *(52|61|62|70|71|72)*.
 The new installation can be done either through the DE web interface, or with the following gradle task.
 ```bash
 ./gradlew :apix-impl:apix-impl-{ALFRESCO-VERSION}:installBundle -Phost={ALFRESCO-HOST} -Pport={ALFRESCO-PORT}
@@ -850,7 +856,7 @@ The new installation can be done either through the DE web interface, or with th
 fixed port in the *docker-compose.yml* of the version you are working with. (The rationale behind using
 variable ephemeral ports is that during parallel builds on Jenkins port clashes must be avoided.)
 
-For example for version 7.0, change in *apix-docker/70/docker-compose.yml*
+For example for version 7.2, change in *apix-docker/72/docker-compose.yml*
 the ports line from:
 ```yaml
 services:
@@ -868,5 +874,5 @@ services:
 and then restart the containers with:
 
 ```bash
-./gradlew :apix-docker:docker-70:composeUp --info
+./gradlew :apix-docker:docker-72:composeUp --info
 ```
