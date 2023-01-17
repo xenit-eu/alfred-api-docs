@@ -484,12 +484,11 @@ Each list element specifies a property on which higlighting needs to be applied.
 When no fields are specified, the call defaults to `cm:content` as field.
 Full documentation can be found on the Alfresco documentation page: 
 
-* [5.2](https://docs.alfresco.com/content-services/5.2/develop/rest-api-guide/searching/#term-highlighting-search)
-* [6.1](https://docs.alfresco.com/content-services/6.1/develop/rest-api-guide/searching/#term-highlighting-search)
 * [6.2](https://docs.alfresco.com/content-services/6.2/develop/rest-api-guide/searching/#term-highlighting-search)
 * [7.0](https://docs.alfresco.com/content-services/7.0/develop/rest-api-guide/searching/#term-highlighting-search)
 * [7.1](https://docs.alfresco.com/content-services/7.1/develop/rest-api-guide/searching/#term-highlighting-search)
-* [7.2](https://docs.alfresco.com/content-services/latest/develop/rest-api-guide/searching/#term-highlighting-search)
+* [7.2](https://docs.alfresco.com/content-services/7.2/develop/rest-api-guide/searching/#term-highlighting-search)
+* [7.3](https://docs.alfresco.com/content-services/latest/develop/rest-api-guide/searching/#term-highlighting-search)
 
 ```json
 {
@@ -741,12 +740,11 @@ Indicates unexpected failures.
 ## Supported Alfresco versions
 Currently Alfred API supports the following Alfresco versions:
 
-* 5.2
-* 6.1
 * 6.2
 * 7.0
 * 7.1
 * 7.2
+* 7.3
 
 ## Pre-requisites
 Alfred API requires **_Dynamic Extensions For Alfresco_**, version 2.0.1 or later. This module should be installed first.
@@ -759,12 +757,11 @@ The application is available as an Alfresco amp artifact, which is the preferred
 
 To install the AMP, follow the Alfresco AMP installation guidelines your version of Alfresco: 
 
-* [5.2](https://docs.alfresco.com/content-services/5.2/develop/extension-packaging/#running-the-mmt)
-* [6.1](https://docs.alfresco.com/content-services/6.1/install/zip/amp/)
 * [6.2](https://docs.alfresco.com/content-services/6.2/install/zip/amp/)
 * [7.0](https://docs.alfresco.com/content-services/7.0/install/zip/amp/)
 * [7.1](https://docs.alfresco.com/content-services/7.1/install/zip/amp/)
-* [7.2](https://docs.alfresco.com/content-services/latest/install/zip/amp/)
+* [7.2](https://docs.alfresco.com/content-services/7.2/install/zip/amp/)
+* [7.3](https://docs.alfresco.com/content-services/latest/install/zip/amp/)
 
 A Dynamic Extensions jar artifact is also available.
 

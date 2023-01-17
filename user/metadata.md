@@ -2,10 +2,10 @@
 title:
     - Alfred API 
     - User Guide
-date: 21/04/2022
+date: 17/01/2023
 document-reference: Alfred API/User Guide
 document-revision: 0.1
-copyright-year: 2022
+copyright-year: 2020-2023
 
 product-color: 33a89f
 frontpage-background-img: images/AlfredAPI-FrontCover.jpg
