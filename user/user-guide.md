@@ -165,14 +165,12 @@ Translating `example:customProperty:"#FFF233" OR example:customProperty:"#AA3BF5
 Translating `NOT cm:name:"Budget 2020.xls"`
 ```json
 {
-  "not": [
-    {
-      "property" : {
-          "name": "cm:name",
-          "value": "Budget 2020.xls"
-        }
+  "not": {
+    "property": {
+      "name": "cm:name",
+      "value": "Budget 2020.xls"
     }
-  ]
+  }
 }
 ```
 
@@ -183,14 +181,12 @@ Operators can be nested to form complex queries:
 {
   "and" : [
     {
-      "not": [
-         {
-            "property" : {
-                "name" : "example:customProperty",
-                "value" : "#FFF233"
-             }
-          }
-      ]
+      "not": {
+        "property" : {
+          "name" : "example:customProperty",
+          "value" : "#FFF233"
+        }
+      }
     },
     {
       "or": [
