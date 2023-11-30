@@ -480,11 +480,11 @@ Each list element specifies a property on which higlighting needs to be applied.
 When no fields are specified, the call defaults to `cm:content` as field.
 Full documentation can be found on the Alfresco documentation page: 
 
-* [6.2](https://docs.alfresco.com/content-services/6.2/develop/rest-api-guide/searching/#term-highlighting-search)
 * [7.0](https://docs.alfresco.com/content-services/7.0/develop/rest-api-guide/searching/#term-highlighting-search)
 * [7.1](https://docs.alfresco.com/content-services/7.1/develop/rest-api-guide/searching/#term-highlighting-search)
 * [7.2](https://docs.alfresco.com/content-services/7.2/develop/rest-api-guide/searching/#term-highlighting-search)
-* [7.3](https://docs.alfresco.com/content-services/latest/develop/rest-api-guide/searching/#term-highlighting-search)
+* [7.3](https://docs.alfresco.com/content-services/7.3/develop/rest-api-guide/searching/#term-highlighting-search)
+* [7.4](https://docs.alfresco.com/content-services/7.4/develop/rest-api-guide/searching/#term-highlighting-search)
 
 ```json
 {
@@ -736,37 +736,34 @@ Indicates unexpected failures.
 ## Supported Alfresco versions
 Currently Alfred API supports the following Alfresco versions:
 
-* 6.2
 * 7.0
 * 7.1
 * 7.2
 * 7.3
+* 7.4
 
-## Pre-requisites
-Alfred API requires **_Dynamic Extensions For Alfresco_**, version 2.0.1 or later. This module should be installed first.
-Acquisition and installation instructions can be found [here](https://github.com/xenit-eu/dynamic-extensions-for-alfresco).
+Note that previous versions of Alfred API needed
+[Dynamic Extensions For Alfresco](https://github.com/xenit-eu/dynamic-extensions-for-alfresco).
+Since version 5.0.0, however, Dynamic Extensions is no longer needed.
 
 ## Artifacts
 ### Prebuilt
 Artifacts can be freely obtained through [Maven Central](https://search.maven.org/search?q=g:eu.xenit.apix).
-The application is available as an Alfresco amp artifact, which is the preferred distribution for production environments. 
+The application is available as an Alfresco AMP artifact, which is the preferred distribution for production environments.
 
 To install the AMP, follow the Alfresco AMP installation guidelines your version of Alfresco: 
 
-* [6.2](https://docs.alfresco.com/content-services/6.2/install/zip/amp/)
 * [7.0](https://docs.alfresco.com/content-services/7.0/install/zip/amp/)
 * [7.1](https://docs.alfresco.com/content-services/7.1/install/zip/amp/)
 * [7.2](https://docs.alfresco.com/content-services/7.2/install/zip/amp/)
-* [7.3](https://docs.alfresco.com/content-services/latest/install/zip/amp/)
-
-A Dynamic Extensions jar artifact is also available.
+* [7.3](https://docs.alfresco.com/content-services/7.3/install/zip/amp/)
+* [7.4](https://docs.alfresco.com/content-services/7.4/install/zip/amp/)
 
 ### Source code
 The source code is available from [Github](https://github.com/xenit-eu/alfred-api), but building the artifacts requires
 access to Alfresco Enterprise libraries to satisfy Enterprise dependencies.
 
-#### Note on naming convention
-Due to legacy support, the older `apix` name is being retained for the time being.
+For legacy reasons the older name `apix` can still be found in certain locations.
 
 
 # Contributing
@@ -839,7 +836,7 @@ In a development scenario, it is possible to upload code changes to a running Al
 This requires the running Alfresco to already have an older or equal version of alfred-api installed, and
 the use of the jar artifact instead of the amp to do the new install.
 The JAR has the format `apix-impl-{ALFRESCO-VERSION}-{APIX-VERSION}.jar` and can be found under
-`apix-impl/{ALFRESCO-VERSION}/build/libs/`, where `ALFRESCO-VERSION` is one of *(52|61|62|70|71|72)*.
+`apix-impl/{ALFRESCO-VERSION}/build/libs/`, where `ALFRESCO-VERSION` is one of *(70|71|72|73|74)*.
 The new installation can be done either through the DE web interface, or with the following gradle task.
 ```bash
 ./gradlew :apix-impl:apix-impl-{ALFRESCO-VERSION}:installBundle -Phost={ALFRESCO-HOST} -Pport={ALFRESCO-PORT}
